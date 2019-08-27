@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+   <link rel="stylesheet" href="./assets/style.css" />
+   <title>Take 2 Tuesday</title>
+</head>
+
+<body>
+
+   <div class="container">
+      <div class="jumbotron">
+         <h1>Take 2 Tuesday</h1>
+         <p>If you feel like you did not get a firm grasp of a concept, or would like some extra attention given to it,
+            submit it here and we'll review the most popular topics next Tuesday! If someone else has already submitted
+            something you'd like to go over, click on the <span class="badge badge-pill badge-primary">2</span> badge
+            next to the description.</p>
+      </div>
+      <div class="row">
+         <div class="col-6">
+            <div class="card">
+               <div class="card-header font-weight-bold text-center">
+                  Vote on Topics
+               </div>
+               <div class="card-body">
+                  <div class="accordion" id="votes-body">
+                  </div>
+               </div>
+               <div class="card-footer text-muted">
+               </div>
+            </div>
+         </div>
+         <div class="col-6">
+            <div class="card">
+               <div class="card-header text-center font-weight-bold">
+                  Submit a New Topic
+               </div>
+               <div class="card-body">
+                  <form id="topic-form">
+                     <div class="form-group">
+                        <lable>Subject</lable>
+                        <div class="d-flex flex-wrap">
+                           <div class="form-check pr-3">
+                              <input class="form-check-input" type="radio" name="subject-radio" id="radio-git"
+                                 value="git" checked>
+                              <label class="form-check-label" for="radio-git">
+                                 Git
+                              </label>
+                           </div>
+                           <div class="form-check pr-3">
+                              <input class="form-check-input" type="radio" name="subject-radio" id="radio-console"
+                                 value="console">
+                              <label class="form-check-label" for="radio-console">
+                                 Console Commands
+                              </label>
+                           </div>
+                           <div class="form-check pr-3">
+                              <input class="form-check-input" type="radio" name="subject-radio" id="radio-html"
+                                 value="html">
+                              <label class="form-check-label" for="radio-html">
+                                 HTML
+                              </label>
+                           </div>
+                           <div class="form-check pr-3">
+                              <input class="form-check-input" type="radio" name="subject-radio" id="radio-css"
+                                 value="css">
+                              <label class="form-check-label" for="radio-css">
+                                 CSS
+                              </label>
+                           </div>
+                           <div class="form-check pr-3">
+                              <input class="form-check-input" type="radio" name="subject-radio" id="radio-bootstrap"
+                                 value="bootstrap">
+                              <label class="form-check-label" for="radio-bootstrap">
+                                 Bootstrap
+                              </label>
+                           </div>
+                           <div class="form-check pr-3">
+                              <input class="form-check-input" type="radio" name="subject-radio" id="radio-other"
+                                 value="other">
+                              <label class="form-check-label" for="radio-other">
+                                 Other
+                              </label>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="form-group other-wrapper">
+                        <label for="other-input">Other Subject</label>
+                        <input class="form-control" id="other-input" placeholder="JavaScript">
+                     </div>
+                     <div class="form-group">
+                        <label for="topic-description">Description</label>
+                        <input class="form-control" id="topic-description" placeholder="How to clone down a repository">
+                        <small id="emailHelp" class="form-text text-muted">Write a short description with more detail
+                           on
+                           specifically what you'd like to copver</small>
+                     </div>
+                     <button type="submit" class="btn btn-primary">Submit</button>
+                  </form>
+               </div>
+               <div class="card-footer text-muted text-center">
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+
+
+
+
+   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"></script>
+
+   <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-app.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-database.js"></script>
+   <script src="./assets/app.js"></script>
+</body>
+
+</html>
