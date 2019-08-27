@@ -27,7 +27,28 @@ if (userVotes) {
    userVotesArr = userVotes.split(",");
 }
 
-
+function displayTopic(topic) {
+   switch (topic) {
+      case "git": {
+         return "Git";
+      }
+      case "console": {
+         return "Console Commands";
+      }
+      case "html": {
+         return "HTML";
+      }
+      case "css": {
+         return "CSS";
+      }
+      case "bootstrap": {
+         return "Bootstrap";
+      }
+      case "other": {
+         return "Other";
+      }
+   }
+};
 
 database.ref().on("value", function(snapshot) {
    console.log(snapshot.val());
@@ -62,7 +83,7 @@ database.ref().on("value", function(snapshot) {
             <div class="card-header" id="${topic}-heading">
                <h2 class="mb-0">
                   <button class="btn btn-link topic-click" type="button" data-toggle="collapse" data-topic="${topic}" data-target="#${topic}-collapse">
-                     <span class="badge badge-pill badge-primary mr-2">${topicTotalVotes}</span>${topic}
+                     <span class="badge badge-pill badge-primary mr-2">${topicTotalVotes}</span>${displayTopic(topic)}
                   </button>
                </h2>
             </div>
