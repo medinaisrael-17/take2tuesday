@@ -60,8 +60,7 @@ database.ref().on("value", function(snapshot) {
       var listStr = ``;
       for (var suggestionId in bulkData[topic]) {
          topicTotalVotes += bulkData[topic][suggestionId].votes;
-         var badgeColor = userVotesArr.includes(suggestionId) ? "badge-secondary" : "badge-primary";
-         var thumb = userVotesArr.includes(suggestionId) ? "👎" : "👍";
+         var badgeColor = userVotesArr.includes(suggestionId) ? "badge-primary" : "badge-secondary";
          var listItem = `
             <p class="ml-4">
                <span
@@ -69,7 +68,7 @@ database.ref().on("value", function(snapshot) {
                   data-id="${suggestionId}"
                   data-topic="${topic}"
                >
-                  ${thumb} ${bulkData[topic][suggestionId].votes}
+               👍 ${bulkData[topic][suggestionId].votes}
                </span>
                ${bulkData[topic][suggestionId].description}
             </p>`;
@@ -149,10 +148,10 @@ $(document).on("click", ".topic-click", function() {
 $(".test-badge").on("click", function() {
    var num = parseInt($(this).text().trim().slice(-1));
    if (num === 2) {
-      $(this).text("👎 3").removeClass("badge-primary").addClass("badge-secondary");
+      $(this).text("👍 3").removeClass("badge-secondary").addClass("badge-primary");
    }
    else {
-      $(this).text("👍 2").removeClass("badge-secondary").addClass("badge-primary");
+      $(this).text("👍 2").removeClass("badge-primary").addClass("badge-secondary");
    }
 })
 
