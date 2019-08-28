@@ -19,7 +19,8 @@ if (!userId) {
    userId = (Math.random() + " ").substring(2, 10) + (Math.random() + " ").substring(2, 10);
    localStorage.setItem("trilogy-id", userId);
 }
-var openTopic = localStorage.getItem("trilogy-topic");
+
+var openTopic = null;
 var userVotes = localStorage.getItem("trilogy-votes");
 var userVotesArr = [];
 
@@ -55,6 +56,8 @@ database.ref().on("value", function(snapshot) {
    var bulkData = snapshot.val();
    $("#votes-body").empty();
 
+   console.log("arr firebase is using: ", userVotesArr);
+
    for (var topic in bulkData) {
       var topicTotalVotes = 0;
       var listStr = ``;
@@ -64,6 +67,7 @@ database.ref().on("value", function(snapshot) {
          }
          topicTotalVotes += bulkData[topic][suggestionId].votes;
          var badgeColor = userVotesArr.includes(suggestionId) ? "badge-secondary" : "badge-primary";
+         var thumb = userVotesArr.includes(suggestionId) ? "👎" : "👍";
          var listItem = `
             <p class="ml-4">
                <span
@@ -71,7 +75,7 @@ database.ref().on("value", function(snapshot) {
                   data-id="${suggestionId}"
                   data-topic="${topic}"
                >
-                  ${bulkData[topic][suggestionId].votes}
+                  ${thumb} ${bulkData[topic][suggestionId].votes}
                </span>
                ${bulkData[topic][suggestionId].description}
             </p>`;
@@ -103,7 +107,16 @@ database.ref().on("value", function(snapshot) {
 function addIdToLocal(id) {
    userVotesArr.push(id);
    userVotes = userVotesArr.join(",");
-   console.log('userVotes:', userVotes)
+   console.log('updated arr:', userVotesArr)
+   localStorage.setItem("trilogy-votes", userVotes);
+}
+
+function removeIdFromLocal(id) {
+   userVotesArr = userVotesArr.filter(function(elem) {
+      return id !== elem;
+   });
+   console.log('updated arr:', userVotesArr)
+   userVotes = userVotesArr.join(",");
    localStorage.setItem("trilogy-votes", userVotes);
 }
 
@@ -122,24 +135,31 @@ $(".form-check-input").on("click", function(event) {
 $(document).on("click", ".click-badge", function() {
    var id = $(this).data("id");
    var topic = $(this).data("topic");
-   var votes = parseInt($(this).text());
+   var votes = parseInt($(this).text().trim().slice(-1));
+   console.log({ id, topic, votes })
    if (!userVotesArr.includes(id)) {
       addIdToLocal(id);
       votes++;
       database.ref(`${topic}/${id}`).update({ votes });
    }
    else {
-      console.log("that badge has already been clicked on");
+      removeIdFromLocal(id);
+      votes--;
+      database.ref(`${topic}/${id}`).update({ votes });
    }
 });
 
 $(document).on("click", ".topic-click", function() {
    var topic = $(this).data("topic");
+   console.log('topic:', topic)
+   console.log('openTopic:', openTopic)
    if (openTopic === topic) {
       localStorage.setItem("trilogy-topic", "");
+      openTopic = "";
    }
    else {
       localStorage.setItem("trilogy-topic", topic);
+      openTopic = topic;
    }
 })
 
