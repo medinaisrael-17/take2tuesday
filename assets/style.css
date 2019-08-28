@@ -1,7 +1,4 @@
-.accordion {
-   min-height: 100px;
-}
-
-.accordion-card {
-   height: 100%;
+.subject-lable {
+   display: inline-block;
+   margin-bottom: .5rem;
 }

@@ -18,7 +18,8 @@
          <h1>Take 2 Tuesday</h1>
          <p>If you feel like you did not get a firm grasp of a concept, or would like some extra attention given to it,
             submit it here and we'll review the most popular topics next Tuesday! If someone else has already submitted
-            something you'd like to go over, click on the <span class="badge badge-pill badge-primary">👍 2</span> badge
+            something you'd like to go over, click on the <span class="badge badge-pill badge-primary test-badge">👍
+               2</span> badge
             next to the description.</p>
       </div>
       <div class="row">
@@ -29,6 +30,10 @@
                </div>
                <div class="card-body">
                   <div class="accordion" id="votes-body">
+                     <div class="d-flex justify-content-center">
+                        <div class="spinner-border text-primary" role="status">
+                        </div>
+                     </div>
                   </div>
                </div>
                <div class="card-footer text-muted">
@@ -43,7 +48,7 @@
                <div class="card-body">
                   <form id="topic-form">
                      <div class="form-group">
-                        <lable>Subject</lable>
+                        <lable class="subject-lable">Subject</lable>
                         <div class="d-flex flex-wrap">
                            <div class="form-check pr-3">
                               <input class="form-check-input" type="radio" name="subject-radio" id="radio-git"
@@ -89,10 +94,10 @@
                            </div>
                         </div>
                      </div>
-                     <div class="form-group other-wrapper">
+                     <!-- <div class="form-group other-wrapper">
                         <label for="other-input">Other Subject</label>
                         <input class="form-control" id="other-input" placeholder="JavaScript">
-                     </div>
+                     </div> -->
                      <div class="form-group">
                         <label for="topic-description">Short Description</label>
                         <input class="form-control" id="topic-description"
