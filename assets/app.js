@@ -12,7 +12,6 @@ firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
 
 var subjectVal = "git";
-$(".other-wrapper").hide();
 
 var userId = localStorage.getItem("trilogy-id");
 if (!userId) {
@@ -55,14 +54,11 @@ database.ref().on("value", function(snapshot) {
    var bulkData = snapshot.val();
    $("#votes-body").empty();
 
-   
+
    for (var topic in bulkData) {
       var topicTotalVotes = 0;
       var listStr = ``;
       for (var suggestionId in bulkData[topic]) {
-         if (bulkData[topic][suggestionId].user === userId) {
-            userVotesArr.push(suggestionId);
-         }
          topicTotalVotes += bulkData[topic][suggestionId].votes;
          var badgeColor = userVotesArr.includes(suggestionId) ? "badge-secondary" : "badge-primary";
          var thumb = userVotesArr.includes(suggestionId) ? "👎" : "👍";
@@ -106,7 +102,7 @@ function addIdToLocal(id) {
    userVotesArr.push(id);
    userVotes = userVotesArr.join(",");
    localStorage.setItem("trilogy-votes", userVotes);
-}
+};
 
 function removeIdFromLocal(id) {
    userVotesArr = userVotesArr.filter(function(elem) {
@@ -114,24 +110,18 @@ function removeIdFromLocal(id) {
    });
    userVotes = userVotesArr.join(",");
    localStorage.setItem("trilogy-votes", userVotes);
-}
+};
 
 
-$(".form-check-input").on("click", function(event) {
+$(".form-check-input").on("click", function() {
    subjectVal = $(this).val();
-
-   // if (subjectVal === "other") {
-   //    $(".other-wrapper").show();
-   // }
-   // else {
-   //    $(".other-wrapper").hide();
-   // }
 });
 
 $(document).on("click", ".click-badge", function() {
    var id = $(this).data("id");
    var topic = $(this).data("topic");
    var votes = parseInt($(this).text().trim().slice(-1));
+
    if (!userVotesArr.includes(id)) {
       addIdToLocal(id);
       votes++;
@@ -168,11 +158,15 @@ $(".test-badge").on("click", function() {
 
 $("#topic-form").on("submit", function(event) {
    event.preventDefault();
+   if (!$("#topic-description").val()) return;
+
    var topicObj = {
       description: $("#topic-description").val(),
-      votes: 1,
-      user: userId
+      votes: 1
    };
 
-   database.ref("/" + subjectVal).push(topicObj);
-})
+   var newKey = database.ref("/" + subjectVal).push().key;
+   addIdToLocal(newKey);
+   database.ref(`/${subjectVal}/${newKey}`).update(topicObj);
+   $("#topic-description").val("")
+});
