@@ -153,14 +153,20 @@ $(".test-badge").on("click", function() {
    else {
       $(this).text("👍 2").removeClass("badge-primary").addClass("badge-secondary");
    }
-})
+});
 
 $("#topic-form").on("submit", function(event) {
    event.preventDefault();
-   if (!$("#topic-description").val()) return;
+   var inputVal = $("#topic-description").val().trim();
+   if (!inputVal) return;
+   for (var i = 0; i < filterThese.length; i++) {
+      if (inputVal.toLowerCase().includes(filterThese[i])) {
+         return;
+      }
+   }
 
    var topicObj = {
-      description: $("#topic-description").val(),
+      description: inputVal,
       votes: 1
    };
 
