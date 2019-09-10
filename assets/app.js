@@ -44,6 +44,12 @@ function displayTopic(topic) {
       case "bootstrap": {
          return "Bootstrap";
       }
+      case "javascript": {
+         return "Javascript";
+      }
+      case "jquery": {
+         return "jQuery";
+      }
       case "other": {
          return "Other";
       }
@@ -56,37 +62,54 @@ database.ref().on("value", function(snapshot) {
 
 
    for (var topic in bulkData) {
-      var topicTotalVotes = 0;
+      var completedVotes = 0;
+      var incompleteVotes = 0;
       var listStr = ``;
       for (var suggestionId in bulkData[topic]) {
-         topicTotalVotes += bulkData[topic][suggestionId].votes;
+         var { completed, votes, description } = bulkData[topic][suggestionId];
          var badgeColor = userVotesArr.includes(suggestionId) ? "badge-primary" : "badge-secondary";
+         var emoji = "👍";
+         var textDec = "none";
+         if (completed) {
+            badgeColor = "badge-success";
+            emoji = "✔️";
+            textDec = "line-through";
+            completedVotes += votes;
+         }
+         else {
+            incompleteVotes += votes;
+         }
+
          var listItem = `
             <p class="ml-4">
                <span
-                  class="badge badge-pill ${badgeColor} mr-2 click-badge"
+                  class="badge badge-pill ${badgeColor} mr-2 item-badge ${completed ? "" : "click-badge"}"
                   data-id="${suggestionId}"
                   data-topic="${topic}"
                >
-               👍 ${bulkData[topic][suggestionId].votes}
+               ${emoji} ${votes}
                </span>
-               ${bulkData[topic][suggestionId].description}
-            </p>`;
+               <span style="text-decoration: ${textDec};">${description}</span>
+            </p>
+         `;
          listStr = listStr + listItem;
       }
 
+      // <span class="badge badge-pill badge-success topic-badge">${completedVotes}</span>
       var topicBulk = $(`
          <div class="card accordion-card">
             <div class="card-header" id="${topic}-heading">
                <h2 class="mb-0">
-                  <button class="btn btn-link topic-click" type="button" data-toggle="collapse" data-topic="${topic}" data-target="#${topic}-collapse">
-                     <span class="badge badge-pill badge-primary mr-2">${topicTotalVotes}</span>${displayTopic(topic)}
+                  <button class="btn btn-link topic-click pl-0 text-decoration-none" type="button" data-toggle="collapse" data-topic="${topic}" data-target="#${topic}-collapse">
+                     
+                     <span class="badge badge-pill badge-primary mr-2 topic-badge">${incompleteVotes}</span>
+                     <span class="topic-title">${displayTopic(topic)}</span>
                   </button>
                </h2>
             </div>
          
             <div id="${topic}-collapse" class="collapse ${openTopic === topic ? "show" : ""}" data-parent="#votes-body">
-               <div class="card-body">
+               <div class="card-body pl-0">
                   ${listStr}
                </div>
             </div>
@@ -167,7 +190,8 @@ $("#topic-form").on("submit", function(event) {
 
    var topicObj = {
       description: inputVal,
-      votes: 1
+      votes: 1,
+      completed: false
    };
 
    var newKey = database.ref("/" + subjectVal).push().key;

@@ -3,6 +3,22 @@
    margin-bottom: .5rem;
 }
 
+.topic-badge {
+   min-width: 30px;
+}
+
+.item-badge {
+   min-width: 40px;
+}
+
+.topic-title {
+   cursor: pointer;
+}
+
+.topic-title:hover {
+   text-decoration: underline;
+}
+
 @keyframes floatup {
    0% {
       transform: translatey(0px);
