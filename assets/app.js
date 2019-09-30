@@ -50,8 +50,20 @@ function displayTopic(topic) {
       case "jquery": {
          return "jQuery";
       }
+      case "ajax": {
+         return "AJAX/API";
+      }
+      case "node": {
+         return "Node";
+      }
+      case "npm": {
+         return "npm";
+      }
       case "other": {
          return "Other";
+      }
+      default: {
+         return topic;
       }
    }
 };
