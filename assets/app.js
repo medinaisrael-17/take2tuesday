@@ -1,24 +1,45 @@
+// James Config
+
+// var firebaseConfig = {
+//    apiKey: "AIzaSyAGxUgOUK8okF7wl197ZfWJadz_UF9TYuE",
+//    authDomain: "take2tuesday.firebaseapp.com",
+//    databaseURL: "https://take2tuesday.firebaseio.com",
+//    projectId: "take2tuesday",
+//    storageBucket: "",
+//    messagingSenderId: "896372061968",
+//    appId: "1:896372061968:web:4157a26038bca110"
+// };
+
+// =====================================================================
+
+// Israel Firebase Config
+
 var firebaseConfig = {
-   apiKey: "AIzaSyAGxUgOUK8okF7wl197ZfWJadz_UF9TYuE",
-   authDomain: "take2tuesday.firebaseapp.com",
-   databaseURL: "https://take2tuesday.firebaseio.com",
-   projectId: "take2tuesday",
-   storageBucket: "",
-   messagingSenderId: "896372061968",
-   appId: "1:896372061968:web:4157a26038bca110"
+   apiKey: "AIzaSyAYtUPRgwn0EYA8iv5u5XHSiiJpagFqYYM",
+   authDomain: "take2tuesday-13512.firebaseapp.com",
+   databaseURL: "https://take2tuesday-13512.firebaseio.com",
+   projectId: "take2tuesday-13512",
+   storageBucket: "take2tuesday-13512.appspot.com",
+   messagingSenderId: "398925635077",
+   appId: "1:398925635077:web:84dd2aa2919d64e7adc66c",
+   measurementId: "G-03MJHDTWCG"
 };
 
+//boiler plate
 firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
 
+//not sure what this is yet
 var subjectVal = "git";
 
+//verifying the user
 var userId = localStorage.getItem("trilogy-id");
 if (!userId) {
    userId = (Math.random() + " ").substring(2, 10) + (Math.random() + " ").substring(2, 10);
    localStorage.setItem("trilogy-id", userId);
 }
 
+//votes
 var openTopic = null;
 var userVotes = localStorage.getItem("trilogy-votes");
 var userVotesArr = [];
@@ -27,6 +48,8 @@ if (userVotes) {
    userVotesArr = userVotes.split(",");
 }
 
+
+//switch cases for which topic to use
 function displayTopic(topic) {
    switch (topic) {
       case "git": {
@@ -68,7 +91,8 @@ function displayTopic(topic) {
    }
 };
 
-database.ref().on("value", function(snapshot) {
+//when the value is added in the database
+database.ref().on("value", function (snapshot) {
    var bulkData = snapshot.val();
    $("#votes-body").empty();
 
@@ -78,7 +102,7 @@ database.ref().on("value", function(snapshot) {
       var incompleteVotes = 0;
       var listStr = ``;
       for (var suggestionId in bulkData[topic]) {
-         var { completed, votes, description } = bulkData[topic][suggestionId];
+         var { completed, votes, description, link } = bulkData[topic][suggestionId];
          var badgeColor = userVotesArr.includes(suggestionId) ? "badge-primary" : "badge-secondary";
          var emoji = "👍";
          var textDec = "none";
@@ -92,6 +116,10 @@ database.ref().on("value", function(snapshot) {
             incompleteVotes += votes;
          }
 
+         if (link) {
+            linkText = `<a class="item-link" href=${link} target="_blank">Link</a>`
+         }
+
          var listItem = `
             <p class="ml-4">
                <span
@@ -101,8 +129,22 @@ database.ref().on("value", function(snapshot) {
                >
                ${emoji} ${votes}
                </span>
+
+
                <span style="text-decoration: ${textDec};">${description}</span>
+
+               ${link ? linkText : ""}
+
+               <button 
+               type="button" 
+               class="btn btn-success completed"
+               data-id="${suggestionId}"
+               data-topic="${topic}"
+               >
+               Completed
+               </button>
             </p>
+            <hr>
          `;
          listStr = listStr + listItem;
       }
@@ -113,9 +155,17 @@ database.ref().on("value", function(snapshot) {
             <div class="card-header" id="${topic}-heading">
                <h2 class="mb-0">
                   <button class="btn btn-link topic-click pl-0 text-decoration-none" type="button" data-toggle="collapse" data-topic="${topic}" data-target="#${topic}-collapse">
-                     
-                     <span class="badge badge-pill badge-primary mr-2 topic-badge">${incompleteVotes}</span>
-                     <span class="topic-title">${displayTopic(topic)}</span>
+                     <div class="definitionContainer">
+                        <div class="incompleteContainer">
+                           <span class="badge badge-pill badge-primary mr-2 topic-badge">${incompleteVotes}</span>
+                           <span class="topic-title">${displayTopic(topic)}</span>
+                        </div>
+
+                        <div class="completedContainer">
+                           <span class="badge badge-pill badge-success mr-2 completed-badge">${completedVotes}</span>
+                           <span class="completedTitle">Completed</span>
+                        </div>
+                     </div>
                   </button>
                </h2>
             </div>
@@ -139,19 +189,25 @@ function addIdToLocal(id) {
 };
 
 function removeIdFromLocal(id) {
-   userVotesArr = userVotesArr.filter(function(elem) {
+   userVotesArr = userVotesArr.filter(function (elem) {
       return id !== elem;
    });
    userVotes = userVotesArr.join(",");
    localStorage.setItem("trilogy-votes", userVotes);
 };
 
+function removeCompleted(id, topic) {
+   database.ref(`${topic}/${id}`).remove().then(function () {
+      console.log(`delted from ${topic}`);
+   })
+}
 
-$(".form-check-input").on("click", function() {
+
+$(".form-check-input").on("click", function () {
    subjectVal = $(this).val();
 });
 
-$(document).on("click", ".click-badge", function() {
+$(document).on("click", ".click-badge", function () {
    var id = $(this).data("id");
    var topic = $(this).data("topic");
    var votes = parseInt($(this).text().trim().slice(-1));
@@ -168,7 +224,15 @@ $(document).on("click", ".click-badge", function() {
    }
 });
 
-$(document).on("click", ".topic-click", function() {
+$(document).on("click", ".completed", function () {
+   var id = $(this).data("id");
+   var topic = $(this).data("topic");
+   database.ref(`${topic}/${id}`).update({ completed: true })
+
+   setTimeout(() => removeCompleted(id, topic), 1000 * 2);
+})
+
+$(document).on("click", ".topic-click", function () {
    var topic = $(this).data("topic");
    if (openTopic === topic) {
       localStorage.setItem("trilogy-topic", "");
@@ -180,7 +244,7 @@ $(document).on("click", ".topic-click", function() {
    }
 });
 
-$(".test-badge").on("click", function() {
+$(".test-badge").on("click", function () {
    var num = parseInt($(this).text().trim().slice(-1));
    if (num === 2) {
       $(this).text("👍 3").removeClass("badge-secondary").addClass("badge-primary");
@@ -190,7 +254,7 @@ $(".test-badge").on("click", function() {
    }
 });
 
-$("#topic-form").on("submit", function(event) {
+$("#topic-form").on("submit", function (event) {
    event.preventDefault();
    var inputVal = $("#topic-description").val().trim();
    if (!inputVal) return;
@@ -211,3 +275,4 @@ $("#topic-form").on("submit", function(event) {
    database.ref(`/${subjectVal}/${newKey}`).update(topicObj);
    $("#topic-description").val("")
 });
+

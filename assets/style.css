@@ -7,6 +7,10 @@
    min-width: 30px;
 }
 
+.completed-badge {
+   min-width: 30px;
+}
+
 .item-badge {
    min-width: 40px;
 }
@@ -18,6 +22,30 @@
 .topic-title:hover {
    text-decoration: underline;
 }
+
+.completed {
+   float: right;
+   margin: 0px auto;
+}
+
+.completedContainer {
+   float: right;
+   position: relative;
+   left: 20px;
+}
+
+.incompleteContainer{
+   float: left;
+}
+
+.completedTitle {
+   color: green;
+}
+
+.card-body hr:last-of-type {
+   display: none;
+}
+
 
 @keyframes floatup {
    0% {
