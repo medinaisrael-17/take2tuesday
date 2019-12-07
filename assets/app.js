@@ -229,7 +229,7 @@ $(document).on("click", ".completed", function () {
    var topic = $(this).data("topic");
    database.ref(`${topic}/${id}`).update({ completed: true })
 
-   setTimeout(() => removeCompleted(id, topic), 1000 * 2);
+   // setTimeout(() => removeCompleted(id, topic), 1000 * 2);
 })
 
 $(document).on("click", ".topic-click", function () {
