@@ -80,10 +80,31 @@ function displayTopic(topic) {
          return "Node";
       }
       case "npm": {
-         return "npm";
+         return "NPM";
       }
       case "other": {
          return "Other";
+      }
+      case "mysql": {
+         return "MySQL"
+      }
+      case "express": {
+         return "Express"
+      }
+      case "sequelize": {
+         return "Sequelize"
+      }
+      case "mongo": {
+         return "Mongo DB"
+      }
+      case "mongoose": {
+         return "Mongoose JS"
+      }
+      case "react": {
+         return "React"
+      }
+      case "handlebars": {
+         return "Handlebars"
       }
       default: {
          return topic;
