@@ -163,7 +163,7 @@ database.ref().on("value", function (snapshot) {
                data-topic="${topic}"
                >
                Completed
-               </button>}` }
+               </button>` }
             </p>
             <hr>
          `;
