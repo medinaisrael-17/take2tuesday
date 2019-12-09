@@ -156,14 +156,14 @@ database.ref().on("value", function (snapshot) {
 
                ${link ? linkText : ""}
 
-               <button 
+               ${completed ? "" : `<button 
                type="button" 
                class="btn btn-success completed"
                data-id="${suggestionId}"
                data-topic="${topic}"
                >
                Completed
-               </button>
+               </button>}` }
             </p>
             <hr>
          `;
