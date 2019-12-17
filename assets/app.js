@@ -155,15 +155,6 @@ database.ref().on("value", function (snapshot) {
                <span style="text-decoration: ${textDec};">${description}</span>
 
                ${link ? linkText : ""}
-
-               ${completed ? "" : `<button 
-               type="button" 
-               class="btn btn-success completed"
-               data-id="${suggestionId}"
-               data-topic="${topic}"
-               >
-               ✔️
-               </button>` }
             </p>
             <hr>
          `;
