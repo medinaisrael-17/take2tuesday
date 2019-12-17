@@ -46,6 +46,10 @@
    display: none;
 }
 
+hr {
+   width: 108%;
+}
+
 
 @keyframes floatup {
    0% {

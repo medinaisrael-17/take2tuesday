@@ -162,7 +162,7 @@ database.ref().on("value", function (snapshot) {
                data-id="${suggestionId}"
                data-topic="${topic}"
                >
-               Completed
+               ✔️
                </button>` }
             </p>
             <hr>
