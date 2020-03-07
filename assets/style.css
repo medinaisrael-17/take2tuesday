@@ -46,6 +46,10 @@
    display: none;
 }
 
+hr {
+   margin: auto;
+}
+
 
 @keyframes floatup {
    0% {
